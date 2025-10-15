@@ -1,0 +1,18 @@
+<domain type='kvm'>
+  <name>win11-enterprise</name>
+  <memory unit='MiB'>8192</memory>
+  <vcpu placement='static'>16</vcpu>
+  <os>
+    <type arch='x86_64'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw'/>
+      <source file='/workspace/vm/data.img'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <interface type='user'>
+      <model type='virtio'/>
+      <source
