@@ -1,0 +1,17 @@
+{
+  "name": "Windows 11 Enterprise VM",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "features": {
+    "docker-in-docker": "latest"
+  },
+  "runArgs": ["--privileged"],
+  "postCreateCommand": "./vm/decompress.sh",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  }
+}
