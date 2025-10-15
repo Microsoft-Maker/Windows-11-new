@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# Default to 2 cores, 8 GB RAM; override with env vars
+# Override with env vars if you like
 : "${CORES:=2}"
-: "${RAM:=8192}"
-: "${DATA_IMG:=/workspace/vm/data.img}"
+: "${RAM:=8192}"        # in MB
+IMG_PATH="$(pwd)/vm/data.qcow2"
 
-if [ ! -f "$DATA_IMG" ]; then
-  echo "❌ VM image not found at $DATA_IMG"
+if [ ! -f "${IMG_PATH}" ]; then
+  echo "❌ VM image not found at ${IMG_PATH}"
   exit 1
 fi
 
-echo "🚀 Launching Windows 11 Enterprise VM"
-echo "   • Cores: $CORES"
-echo "   • RAM: ${RAM} MB"
-echo "   • Image: $DATA_IMG"
+echo "🚀 Launching Win11 Enterprise"
+echo "   • Cores: ${CORES} (max 16)"
+echo "   • RAM:   ${RAM} MB"
+echo "   • Disk:  ${IMG_PATH}"
 
 qemu-system-x86_64 \
   -enable-kvm \
-  -m "$RAM" \
-  -smp cores="$CORES" \
+  -m "${RAM}" \
+  -smp cores="${CORES}",maxcpus=16 \
   -cpu host \
-  -drive file="$DATA_IMG",format=qcow2,if=virtio \
+  -drive file="${IMG_PATH}",format=qcow2,if=virtio \
   -netdev user,id=net0 \
   -device virtio-net,netdev=net0 \
   -vga qxl \
