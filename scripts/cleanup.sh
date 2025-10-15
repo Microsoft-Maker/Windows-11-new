@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-echo "🧹 Cleaning up temporary files and logs…"
-rm -rf /tmp/* /var/tmp/* ~/.cache/* /var/log/*.log
+echo "🧹 Cleaning up temporary files and caches..."
+rm -rf /tmp/* /var/tmp/* ~/.cache/*
 sync
 
-echo "📊 Current disk usage:"
-df -h | grep -E '^/dev/(sda|vda)' || df -h
+echo "📊 Current disk usage for root & vm folder:"
+df -h / /$(pwd)/vm
